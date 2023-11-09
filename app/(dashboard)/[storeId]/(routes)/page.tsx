@@ -96,8 +96,8 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
               <SalesButton storeId={params.storeId} />
             </CardHeader>
             <CardContent className="pl-2">
-              {lastFewSales.map((sale) => (
-                <SalesItem data={sale} />
+              {lastFewSales.map((sale, index) => (
+                <SalesItem data={sale} key={index} />
               ))}
             </CardContent>
           </Card>

@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button';
 import SalesItem from '@/components/sales-items';
 import SalesButton from '@/components/sales-button';
+import { ArrowRightIcon } from '@radix-ui/react-icons';
 
 interface DashboardPageProps {
   params: {
@@ -91,7 +92,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
                 <Users className="mx-2 h-6 w-6 text-muted-foreground" />
               </CardTitle>
               <p className="text-sm font-light text-muted-foreground">
-                You made {monthlySales} sales this month
+                You made {monthlySales} sales this month 
               </p>
               <SalesButton storeId={params.storeId} />
             </CardHeader>

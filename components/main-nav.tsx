@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link"
-import { useParams, usePathname } from "next/navigation";
+import Link from 'next/link';
+import { useParams, usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 export function MainNav({
   className,
@@ -35,7 +35,7 @@ export function MainNav({
     },
     {
       href: `/${params.storeId}/colors`,
-      label: 'Colors',
+      label: 'Concentration',
       active: pathname === `/${params.storeId}/colors`,
     },
     {
@@ -53,11 +53,11 @@ export function MainNav({
       label: 'Settings',
       active: pathname === `/${params.storeId}/settings`,
     },
-  ]
+  ];
 
   return (
     <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+      className={cn('flex items-center space-x-4 lg:space-x-6', className)}
       {...props}
     >
       {routes.map((route) => (
@@ -66,12 +66,14 @@ export function MainNav({
           href={route.href}
           className={cn(
             'text-sm font-medium transition-colors hover:text-primary',
-            route.active ? 'text-black dark:text-white' : 'text-muted-foreground'
+            route.active
+              ? 'text-black dark:text-white'
+              : 'text-muted-foreground'
           )}
         >
           {route.label}
-      </Link>
+        </Link>
       ))}
     </nav>
-  )
-};
+  );
+}

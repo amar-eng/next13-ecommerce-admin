@@ -60,6 +60,11 @@ model Product {
   category    Category  @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name        String
   price       Decimal
+  brand       String    // New field for brand
+  longevity   String    // New field for longevity
+  season      String    // New field for season
+  countInStock Int      // New field for count in stock
+  description String    
   isFeatured  Boolean   @default(false)
   isArchived  Boolean   @default(false)
   sizeId      String    // Foreign Key to Size
@@ -99,6 +104,7 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id])
   productId String  // Foreign Key to Product
   product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
 
   @@index([orderId])
   @@index([productId])

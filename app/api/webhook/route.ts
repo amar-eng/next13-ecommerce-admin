@@ -36,12 +36,14 @@ export async function POST(req: Request) {
   const addressString = addressComponents.filter((c) => c !== null).join(', ');
 
   if (event.type === 'checkout.session.completed') {
+    const totalPaid = session?.amount_total / 100;
     const order = await prismadb.order.update({
       where: {
         id: session?.metadata?.orderId,
       },
       data: {
         isPaid: true,
+        totalPaid,
         address: addressString,
         phone: session?.customer_details?.phone || '',
         userEmail: session?.customer_details?.email || '',
@@ -52,18 +54,24 @@ export async function POST(req: Request) {
       },
     });
 
-    const productIds = order.orderItems.map((orderItem) => orderItem.productId);
+    for (const orderItem of order.orderItems) {
+      const product = await prismadb.product.findUnique({
+        where: { id: orderItem.productId },
+      });
 
-    await prismadb.product.updateMany({
-      where: {
-        id: {
-          in: [...productIds],
-        },
-      },
-      data: {
-        isArchived: true,
-      },
-    });
+      if (product) {
+        let newCount = product.countInStock - orderItem.orderQuantity;
+        let isNowArchived = newCount <= 0;
+
+        await prismadb.product.update({
+          where: { id: orderItem.productId },
+          data: {
+            countInStock: newCount < 0 ? 0 : newCount,
+            isArchived: isNowArchived,
+          },
+        });
+      }
+    }
   }
 
   return new NextResponse(null, { status: 200 });

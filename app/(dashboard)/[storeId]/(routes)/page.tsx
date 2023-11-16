@@ -32,7 +32,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const recentSales = await getRecentSales(params.storeId);
   const monthlySales = await getMonthlySalesCount(params.storeId);
 
-  const lastFewSales = recentSales.reverse().slice(-4) || [];
+  const lastFewSales = recentSales.slice(-4) || [];
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
@@ -92,7 +92,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
                 <Users className="mx-2 h-6 w-6 text-muted-foreground" />
               </CardTitle>
               <p className="text-sm font-light text-muted-foreground">
-                You made {monthlySales} sales this month 
+                You made {monthlySales} sales this month
               </p>
               <SalesButton storeId={params.storeId} />
             </CardHeader>

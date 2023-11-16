@@ -29,10 +29,7 @@ export const getRecentSales = async (storeId: string) => {
 
   // Extract the relevant information from the orders
   const recentSalesData = recentOrders.map((order) => {
-    const amount = order.orderItems.reduce(
-      (sum, item) => sum + Number(item.product.price),
-      0
-    );
+    const amount = order.totalPaid;
     const userEmail = order.userEmail;
     const userName = order.userName;
 

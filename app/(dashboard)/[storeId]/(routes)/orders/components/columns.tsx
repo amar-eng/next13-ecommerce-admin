@@ -11,15 +11,20 @@ export type OrderColumn = {
   email: string;
   name: string;
   isPaid: boolean;
-  totalPrice: string;
+  totalPrice: number;
   products: string;
   createdAt: string;
+  quantity: number;
 };
 
 export const columns: ColumnDef<OrderColumn>[] = [
   {
     accessorKey: 'products',
     header: 'Products',
+  },
+  {
+    accessorKey: 'quantity',
+    header: 'Quantity',
   },
   {
     accessorKey: 'name',

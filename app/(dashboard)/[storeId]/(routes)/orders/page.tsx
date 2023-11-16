@@ -23,24 +23,26 @@ const OrdersPage = async ({ params }: { params: { storeId: string } }) => {
     },
   });
 
-  console.log('Orders', orders[0]);
-  const formattedOrders: OrderColumn[] = orders.map((item) => ({
-    id: item.id,
-    phone: item.phone,
-    address: item.address,
-    products: item.orderItems
-      .map((orderItem) => orderItem.product.name)
-      .join(', '),
-    totalPrice: formatter.format(
-      item.orderItems.reduce((total, item) => {
-        return total + Number(item.product.price);
-      }, 0)
-    ),
-    isPaid: item.isPaid,
-    createdAt: format(item.createdAt, 'MMMM do, yyyy'),
-    email: item.userEmail,
-    name: item.userName,
-  }));
+  const formattedOrders: OrderColumn[] = [];
+
+  orders.forEach((order) => {
+    order.orderItems.forEach((orderItem) => {
+      const price = Number(orderItem.product.price);
+
+      formattedOrders.push({
+        id: order.id,
+        phone: order.phone,
+        address: order.address,
+        products: orderItem.product.name, // Just the name of the single product
+        quantity: orderItem.orderQuantity, // The quantity for this product
+        totalPrice: orderItem.orderQuantity * price, // Total price for this product
+        isPaid: order.isPaid,
+        createdAt: format(order.createdAt, 'MMMM do, yyyy'),
+        email: order.userEmail,
+        name: order.userName,
+      });
+    });
+  });
 
   return (
     <div className="flex-col">

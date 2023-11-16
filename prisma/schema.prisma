@@ -63,8 +63,8 @@ model Product {
   brand       String    // New field for brand
   longevity   String    // New field for longevity
   season      String    // New field for season
-  countInStock Int      // New field for count in stock
-  description String    
+  countInStock Int       @default(1) // New field for count in stock
+  description String    @db.Text
   isFeatured  Boolean   @default(false)
   isArchived  Boolean   @default(false)
   sizeId      String    // Foreign Key to Size
@@ -87,6 +87,7 @@ model Order {
   store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[] // Relation to OrderItem model
   isPaid     Boolean   @default(false)
+  totalPaid  Float     
   phone      String    @default("")
   address    String    @default("")
   userName   String    @default("")
@@ -104,8 +105,7 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id])
   productId String  // Foreign Key to Product
   product   Product @relation(fields: [productId], references: [id])
-  quantity  Int
-
+  orderQuantity Int
   @@index([orderId])
   @@index([productId])
 }

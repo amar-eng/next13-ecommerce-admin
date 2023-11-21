@@ -32,7 +32,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const recentSales = await getRecentSales(params.storeId);
   const monthlySales = await getMonthlySalesCount(params.storeId);
 
-  const lastFewSales = recentSales.slice(-4) || [];
+  const lastFewSales = recentSales.reverse().slice(-4) || [];
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">

@@ -20,7 +20,6 @@ export const getRecentSales = async (storeId: string) => {
           product: true,
         },
       },
-      // Include additional relations here if needed, e.g., user information
     },
     orderBy: {
       createdAt: 'desc',

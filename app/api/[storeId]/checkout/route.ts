@@ -25,18 +25,26 @@ export async function POST(
         in: cartItems.map((product: any) => product.id),
       },
     },
+    include: {
+      images: {
+        take: 1,
+      },
+    },
   });
 
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
   products.forEach((product) => {
     const orderItem = cartItems.find((item: any) => item.id === product.id);
+    const imageUrl = product.images.length > 0 ? product.images[0].url : null;
+
     line_items.push({
       quantity: orderItem.orderQuantity,
       price_data: {
         currency: 'USD',
         product_data: {
           name: product.name,
+          images: imageUrl ? [imageUrl] : [],
         },
         unit_amount: product.price.toNumber() * 100,
       },
@@ -74,7 +82,7 @@ export async function POST(
     phone_number_collection: {
       enabled: true,
     },
-    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
+    success_url: `${process.env.FRONTEND_STORE_URL}/post-checkout`,
     cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
     metadata: {
       orderId: order.id,
